@@ -19,7 +19,7 @@ import logging
 import luigi
 from luigi import configuration, LocalTarget
 from luigi.parameter import Parameter
-from luigi.s3 import S3Target, S3PathTask, S3Client
+from luigi.contrib.s3 import S3Target, S3PathTask, S3Client
 
 from mortar.luigi import target_factory
 
@@ -54,7 +54,7 @@ class S3TransferTask(luigi.Task):
         if not hasattr(self, "client"):
             self.client = \
                 S3Client(
-                    luigi.configuration.get_config().get('s3', 'aws_access_key_id'), 
+                    luigi.configuration.get_config().get('s3', 'aws_access_key_id'),
                     luigi.configuration.get_config().get('s3', 'aws_secret_access_key'))
         return self.client
 
@@ -63,7 +63,7 @@ class LocalToS3Task(S3TransferTask):
     """
     Copy a file from local disk to S3.
 
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     client configuration file:
 
     ::[s3]
@@ -73,7 +73,7 @@ class LocalToS3Task(S3TransferTask):
     Example usage:
 
     ::    # copy from /mnt/tmp/myfile.txt to s3://my-bucket/my-folder/myfile.txt
-    ::    LocalToS3Task(local_path='/mnt/tmp/myfile.txt', 
+    ::    LocalToS3Task(local_path='/mnt/tmp/myfile.txt',
     ::                  s3_path='s3://my-bucket/my-folder/myfile.txt')
     """
 

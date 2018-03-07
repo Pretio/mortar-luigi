@@ -36,9 +36,9 @@ setup(name='mortar-luigi',
       ],
       license='LICENSE.txt',
       install_requires=[
-          'luigi',
+          'luigi==2.7.2',
           'requests',
-          'boto==2.24.0',
+          'boto==2.48.0',
           'pymongo>=2.5',
           'mortar-api-python'
       ],

@@ -54,7 +54,7 @@ class DBMSTask(luigi.Task):
     def output(self):
         """
         The output for this Task. Returns the output token
-        by default, so the task only runs if the token does not 
+        by default, so the task only runs if the token does not
         already exist.
 
         :rtype: Target:
@@ -80,7 +80,7 @@ class PostgresTask(DBMSTask):
     Superclass for Luigi Tasks that interact with a
     PostgreSQL database.
 
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     configuration file:
 
     ::[postgres]
@@ -126,7 +126,7 @@ class MySQLTask(DBMSTask):
     Superclass for Luigi Tasks that interact with a
     MySQL database.
 
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     configuration file:
 
     ::[mysql]
@@ -181,7 +181,7 @@ class CreateDBMSTable(DBMSTask):
 
     def field_string(self):
         """
-        String enumerating all fields and their data types, 
+        String enumerating all fields and their data types,
         including primary keys.
 
         e.g.: 'num integer, data varchar'
@@ -301,7 +301,7 @@ class CreatePostgresTable(CreateDBMSTable, PostgresTask):
     """
     Create a new table in a PostgreSQL database.
 
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     configuration file:
 
     ::[postgres]
@@ -321,7 +321,7 @@ class CreateMySQLTable(CreateDBMSTable, MySQLTask):
     """
     Create a new table in a MySQL database.
 
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     configuration file:
 
     ::[mysql]
@@ -343,7 +343,7 @@ class SanityTestPostgresTable(SanityTestDBMSTable, PostgresTask):
     Run a sanity test that data has been properly loaded
     into a PostgreSQL database table.
 
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     configuration file:
 
     ::[postgres]
@@ -361,7 +361,7 @@ class SanityTestPostgresTable(SanityTestDBMSTable, PostgresTask):
 
 class SanityTestMySQLTable(SanityTestDBMSTable, MySQLTask):
     """
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     configuration file:
 
     ::[mysql]
@@ -382,7 +382,7 @@ class ExtractFromMySQL(luigi.Task):
     """
     Extracts data from MySQL.
 
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     configuration file:
 
     ::[mysql]
@@ -393,7 +393,7 @@ class ExtractFromMySQL(luigi.Task):
     ::password=my_password
 
     Also, ensure you have installed the mysql command-line tool
-    on your system. This tool is installed automatically on 
+    on your system. This tool is installed automatically on
     Mortar's pipeline servers.
 
     You can also override dbname and host by providing parameters
@@ -433,13 +433,13 @@ class ExtractFromMySQL(luigi.Task):
     # the string "NULL" in the extract will be replaced with a
     # blank string.
     # Default: True
-    replace_null_with_blank = luigi.BooleanParameter(default=True)
+    replace_null_with_blank = luigi.BoolParameter(default=True)
 
     # Usually, the mysql CLI escapes control characters.
-    # For example: newline, tab, NUL, and backslash are written as \n, \t, \0, and \\. 
+    # For example: newline, tab, NUL, and backslash are written as \n, \t, \0, and \\.
     # If raw is set, this character escaping will be disabled.
     # Default: False
-    raw = luigi.BooleanParameter(default=False)
+    raw = luigi.BoolParameter(default=False)
 
     def user(self):
         config = luigi.configuration.get_config()

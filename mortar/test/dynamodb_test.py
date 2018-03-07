@@ -3,7 +3,7 @@ import unittest
 from boto.dynamodb2.fields import HashKey, AllIndex, RangeKey
 from boto.dynamodb2.types import STRING, NUMBER
 import luigi
-from luigi.s3 import S3Target, S3Client
+from luigi.contrib.s3 import S3Target, S3Client
 from mock import patch
 from mortar.luigi.dynamodb import DynamoDBClient, CreateDynamoDBTable, UpdateDynamoDBThroughput,\
     SanityTestDynamoDBTable, DynamoDBTaskException

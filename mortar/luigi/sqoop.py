@@ -14,7 +14,7 @@
 
 import abc
 import luigi, os
-from luigi.s3 import S3PathTask
+from luigi.contrib.s3 import S3PathTask
 import logging
 from subprocess import check_output
 
@@ -32,7 +32,7 @@ class MortarSqoopTask(S3PathTask):
     One required parameter:
         path - s3n path where results are stored
 
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     client configuration file:
 
     ::[database]
@@ -56,8 +56,8 @@ class MortarSqoopTask(S3PathTask):
     jdbc_driver = luigi.Parameter(default=None)
     direct = luigi.Parameter(default=None)
     driver_jar = luigi.Parameter(default=None)
-        
-    
+
+
     def parameters(self):
         """
         These values are required parameters.
@@ -141,7 +141,7 @@ class MortarSqoopQueryTask(MortarSqoopTask):
     """
     Export the result of an SQL query to S3. EXPERIMENTAL.
     Runs:
-    mortar local:sqoop_query dbtype database-name query path 
+    mortar local:sqoop_query dbtype database-name query path
 
     sql_query must be return the query to be run
     Example:
@@ -156,7 +156,7 @@ class MortarSqoopQueryTask(MortarSqoopTask):
 
     def command(self):
         return 'sqoop_query'
-    
+
     def arguments(self):
         return [self.sql_query(),]
 
@@ -169,7 +169,7 @@ class MortarSqoopIncrementalTask(MortarSqoopTask):
     Export all records where column is > value. EXPERIMENTAL.
 
     Runs:
-    mortar local:sqoop_incremental dbtype database-name table column value path 
+    mortar local:sqoop_incremental dbtype database-name table column value path
 
     Required Parameters:
         path = s3n path to where data will be stored
@@ -193,7 +193,7 @@ class MortarSqoopTableTask(MortarSqoopTask):
     """
     Export all data from an RDBMS table to S3. EXPERIMENTAL.
     Runs:
-    mortar local:sqoop_table dbtype database-name table path 
+    mortar local:sqoop_table dbtype database-name table path
 
     Required Parameter:
         path = s3n path to where data will be stored

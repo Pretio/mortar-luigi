@@ -18,7 +18,7 @@ import logging
 
 import luigi
 from luigi.contrib import redshift
-from luigi.s3 import S3Client
+from luigi.contrib.s3 import S3Client
 
 logger = logging.getLogger('luigi-interface')
 
@@ -31,7 +31,7 @@ class CopyPigOutputToRedshiftTask(redshift.S3CopyToTable):
     """
 
     # If a field name has aliases prepended to its name,
-    # take the pig_alias_depth innermost aliases and prepend 
+    # take the pig_alias_depth innermost aliases and prepend
     # them to the column name.  Ignore the rest.
     # e.g. table_2::table_1::my_alias => table_1_my_alias if
     # pig_alias_depth is set to 1
@@ -46,8 +46,8 @@ class CopyPigOutputToRedshiftTask(redshift.S3CopyToTable):
 
     def table_keys(self):
         """
-        Override to return a list of keys (each key in a tuple) that 
-        will be appended to the columns list when creating the table.  
+        Override to return a list of keys (each key in a tuple) that
+        will be appended to the columns list when creating the table.
 
         Examples:
 
@@ -78,9 +78,9 @@ class CopyPigOutputToRedshiftTask(redshift.S3CopyToTable):
         if not s3Client.exists(self.s3_schema_path()):
             raise Exception("No schema file located at %s.  Can not set Redshift columns." % s3_schema_path)
         else:
-            logger.info("Found schema file %s" % self.s3_schema_path())
+            logger.info("Found schema file %s" % self.s3_load_path())
 
-        schema_key = s3Client.get_key(self.s3_schema_path())
+        schema_key = s3Client.get_key(self.s3_load_path())
         return schema_key.get_contents_as_string()
 
 

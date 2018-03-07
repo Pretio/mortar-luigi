@@ -13,7 +13,7 @@
 # the License.
 
 import datetime
-from luigi.s3 import S3Target
+from luigi.contrib.s3 import S3Target
 from luigi.target import FileSystemTarget
 from luigi import LocalTarget
 

@@ -44,7 +44,7 @@ class MortarTask(luigi.Task):
     Superclass for Luigi Tasks that perform actions in Mortar
     using the Mortar API.
 
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     client configuration file:
 
     ::[mortar]
@@ -67,10 +67,10 @@ class MortarTask(luigi.Task):
 
 class MortarProjectTask(MortarTask):
     """
-    Luigi Task to run a job on the Mortar platform. 
+    Luigi Task to run a job on the Mortar platform.
     If the job fails, the task will exit with an error.
 
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     client configuration file:
 
     ::[mortar]
@@ -96,18 +96,18 @@ class MortarProjectTask(MortarTask):
     # after being idle for one hour.
     # This option does not apply when running the Mortar job in local mode
     # (cluster_size = 0).
-    run_on_single_use_cluster = luigi.BooleanParameter(False)
+    run_on_single_use_cluster = luigi.BoolParameter(False)
 
     # If False, this task will only run on an idle cluster or will
     # start up a new cluster if no idle clusters are found.  If True,
     # this task may run on a cluster that has other jobs already running on it.
     # If run_on_single_use_cluster is True, this parameter will be ignored.
-    share_running_cluster = luigi.BooleanParameter(False)
+    share_running_cluster = luigi.BoolParameter(False)
 
     # Whether a launched Hadoop cluster will take advantage of AWS
     # Spot Pricing (https://help.mortardata.com/technologies/hadoop/spot_instance_clusters)
     # This option does not apply when running in local mode (cluster_size = 0).
-    use_spot_instances = luigi.BooleanParameter(True)
+    use_spot_instances = luigi.BoolParameter(True)
 
     # The Git reference (commit hash or branch name) to use when running
     # this Mortar job.  The default value NO_GIT_REF_FLAG is a flag value
@@ -118,7 +118,7 @@ class MortarProjectTask(MortarTask):
 
     # Set to true to receive an email upon completion
     # of this Mortar job.
-    notify_on_job_finish = luigi.BooleanParameter(default=False)
+    notify_on_job_finish = luigi.BoolParameter(default=False)
 
     # Internval (in seconds) to poll for job status.
     job_polling_interval = luigi.IntParameter(default=5)
@@ -131,7 +131,7 @@ class MortarProjectTask(MortarTask):
 
     def project(self):
         """
-        Override this method to provide the name of 
+        Override this method to provide the name of
         the Mortar Project.
 
         :rtype: str:
@@ -145,7 +145,7 @@ class MortarProjectTask(MortarTask):
     @abc.abstractmethod
     def script(self):
         """
-        Override this method to provide the name of 
+        Override this method to provide the name of
         the script to run.
 
         :rtype: str:
@@ -194,7 +194,7 @@ class MortarProjectTask(MortarTask):
         tokens are written to a temporary directory on the file system.
 
         However, for running in a cluster setting, you should overrides this method
-        to use an S3 path (e.g. s3://my-bucket/my-token-path), 
+        to use an S3 path (e.g. s3://my-bucket/my-token-path),
         ensuring that tokens will be available from any machine.
 
         :rtype: str:
@@ -218,11 +218,11 @@ class MortarProjectTask(MortarTask):
     def running_token(self):
         """
         The MortarProjectTask writes out several "tokens" as it executes to ensure
-        idempotence. This method provides the token file that indicates that the job 
+        idempotence. This method provides the token file that indicates that the job
         is running.
 
         By default, it is stored underneath the path provided by the `token_path` method,
-        and is named after your class name. So, if your `token_path` is set to 
+        and is named after your class name. So, if your `token_path` is set to
         `s3://my-bucket/my-folder` and your Task is named FooTask, the token will be:
 
         `s3://my-bucket/my-folder/FooTask-Running`
@@ -237,11 +237,11 @@ class MortarProjectTask(MortarTask):
     def success_token(self):
         """
         The MortarProjectTask writes out several "tokens" as it executes to ensure
-        idempotence. This method provides the token file that indicates that the job 
+        idempotence. This method provides the token file that indicates that the job
         has finished successfully. If this token exists, the Task will not be rerun.
 
         By default, it is stored underneath the path provided by the `token_path` method,
-        and is named after your class name. So, if your `token_path` is set to 
+        and is named after your class name. So, if your `token_path` is set to
         `s3://my-bucket/my-folder` and your Task is named FooTask, the token will be:
 
         `s3://my-bucket/my-folder/FooTask`
@@ -261,7 +261,7 @@ class MortarProjectTask(MortarTask):
         idempotence:
 
         * `running_token`: This token indicates that the job is currently running. If a token
-          exists at this path, Luigi will poll the currently running job instead of starting a 
+          exists at this path, Luigi will poll the currently running job instead of starting a
           new one.
         * `success_token`: This token indicates that the job has already completed successfully.
           If this token exists, Luigi will not rerun the task.
@@ -332,7 +332,7 @@ class MortarProjectTask(MortarTask):
             job_id = jobs.post_job_new_cluster(api, self.project(), self.script(), self.cluster_size,
                 cluster_type=cluster_type, git_ref=self._git_ref(), parameters=self.parameters(),
                 notify_on_job_finish=self.notify_on_job_finish, is_control_script=self.is_control_script(),
-                pig_version=self.pig_version, use_spot_instances=self.use_spot_instances, 
+                pig_version=self.pig_version, use_spot_instances=self.use_spot_instances,
                 pipeline_job_id=self._get_pipeline_job_id())
         logger.info('Submitted new job to mortar with job_id [%s]' % job_id)
         return job_id
@@ -396,7 +396,7 @@ class MortarProjectTask(MortarTask):
 
     def _get_pipeline_job_id(self):
         """
-        Get the job_id for the parent luigi pipeline 
+        Get the job_id for the parent luigi pipeline
         that executed this Pig job, if applicable.
         """
         return os.environ.get('PIPELINE_JOB_ID')
@@ -404,10 +404,10 @@ class MortarProjectTask(MortarTask):
 
 class MortarProjectPigscriptTask(MortarProjectTask):
     """
-    Luigi Task to run a Pigscript on the Mortar platform. 
+    Luigi Task to run a Pigscript on the Mortar platform.
     If the job fails, the task will exit with an error.
 
-    To use this class, define the following section in your Luigi 
+    To use this class, define the following section in your Luigi
     client configuration file:
 
     ::[mortar]
@@ -425,7 +425,7 @@ class MortarProjectControlscriptTask(MortarProjectTask):
     """
     [DEPRECATED]
 
-    Luigi Task to run a Pig-based control script on the Mortar platform. 
+    Luigi Task to run a Pig-based control script on the Mortar platform.
     If the job fails, the task will exit with an error.
     """
 
@@ -461,7 +461,7 @@ class MortarRTask(luigi.Task):
     def output(self):
         """
         The output for this Task. Returns the output token
-        by default, so the task only runs if the token does not 
+        by default, so the task only runs if the token does not
         already exist.
 
         :rtype: Target:
@@ -524,7 +524,7 @@ class MortarRTask(luigi.Task):
 
 class MortarClusterShutdownTask(MortarTask):
     """
-    Luigi Task to shuts down all running clusters 
+    Luigi Task to shuts down all running clusters
     without active jobs for the specified user.
 
     seealso:: https://help.mortardata.com/technologies/luigi/cluster_management_tasks

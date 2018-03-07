@@ -1,6 +1,6 @@
 import unittest
 import luigi
-from luigi.s3 import S3Target, S3Client
+from luigi.contrib.s3 import S3Target, S3Client
 
 from mock import Mock
 from mock import patch

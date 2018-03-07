@@ -16,7 +16,7 @@ import abc
 import json
 from luigi import Task, configuration
 import luigi
-from luigi.s3 import S3Target
+from luigi.contrib.s3 import S3Target
 import requests
 from requests.auth import HTTPBasicAuth
 
